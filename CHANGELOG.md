@@ -1,3 +1,7 @@
+## 0.2.0
+
+- **FEAT**: flutter doc comments.
+
 ## 0.1.1
 
 - **FIX**: project structure.
