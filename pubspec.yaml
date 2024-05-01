@@ -1,7 +1,7 @@
 name: error_or
 description: A simple, fluent discriminated union of an error or a result. Inspired by ErrorOr for .net by Amantiband
 version: 0.0.1
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/lucafabbri/flutter-error-or
 
 environment:
   sdk: ^3.3.4
