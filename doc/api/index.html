@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 8.0.3">
+  <meta name="description" content="error_or_plus API docs, for the Dart programming language.">
+  <title>error_or_plus - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">error_or_plus package</li>
+  </ol>
+  <div class="self-name">error_or_plus</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <div align="center">
+<h1 id="erroror-plus">ErrorOr Plus</h1>
+<p>This library is a porting of <a href="https://github.com/amantinband/error-or">ErrorOr</a> for C# made by <a href="https://github.com/amantinband">Amichai Mantinband</a></p>
+<h3 id="a-simple-fluent-discriminated-union-of-an-error-or-a-result">A simple, fluent discriminated union of an error or a result.</h3>
+<p><code>dart pub add error_or_plus</code></p>
+</div>
+<ul>
+<li><a href="#give-it-a-star-">Give it a star ⭐!</a></li>
+<li><a href="#getting-started-">Getting Started 🏃</a>
+<ul>
+<li><a href="#replace-throwing-exceptions-with-errorort">Replace throwing exceptions with <code>ErrorOr&lt;T&gt;</code></a></li>
+<li><a href="#support-for-multiple-errors">Support For Multiple errors</a></li>
+<li><a href="#various-functional-methods-and-extension-methods">Various Functional Methods and Extension Methods</a>
+<ul>
+<li><a href="#real-world-example">Real world example</a></li>
+<li><a href="#simple-example-with-intermediate-steps">Simple Example with intermediate steps</a>
+<ul>
+<li><a href="#no-failure">No Failure</a></li>
+<li><a href="#failure">Failure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#creating-an-erroror-instance">Creating an <code>ErrorOr</code> instance</a>
+<ul>
+<li><a href="#using-the-toerroror-extension-method">Using The <code>ToErrorOr</code> Extension Method</a></li>
+</ul>
+</li>
+<li><a href="#properties">Properties</a>
+<ul>
+<li><a href="#iserror"><code>isError</code></a></li>
+<li><a href="#value"><code>value</code></a></li>
+<li><a href="#errors"><code>errors</code></a></li>
+<li><a href="#firsterror"><code>firstError</code></a></li>
+<li><a href="#errorsoremptylist"><code>errorsOrEmptyList</code></a></li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a>
+<ul>
+<li><a href="#match"><code>match</code></a>
+<ul>
+<li><a href="#match-1"><code>match</code></a></li>
+<li><a href="#matchasync"><code>matchAsync</code></a></li>
+<li><a href="#matchfirst"><code>matchFirst</code></a></li>
+<li><a href="#matchfirstasync"><code>matchFirstAsync</code></a></li>
+</ul>
+</li>
+<li><a href="#switch"><code>doSwitch</code></a>
+<ul>
+<li><a href="#switch-1"><code>doSwitch</code></a></li>
+<li><a href="#switchasync"><code>doSwitchAsync</code></a></li>
+<li><a href="#switchfirst"><code>doSwitchFirst</code></a></li>
+<li><a href="#switchfirstasync"><code>doSwitchFirstAsync</code></a></li>
+</ul>
+</li>
+<li><a href="#then"><code>then</code></a>
+<ul>
+<li><a href="#then-1"><code>then</code></a></li>
+<li><a href="#thenasync"><code>thenAsync</code></a></li>
+<li><a href="#thendo-and-thendoasync"><code>thenDo</code> and <code>thenDoAsync</code></a></li>
+<li><a href="#mixing-then-thendo-thenasync-thendoasync">Mixing <code>then</code>, <code>thenDo</code>, <code>thenAsync</code>, <code>thenDoAsync</code></a></li>
+</ul>
+</li>
+<li><a href="#failif"><code>failIf</code></a></li>
+<li><a href="#else"><code>orElse</code></a>
+<ul>
+<li><a href="#else-1"><code>orElse</code></a></li>
+<li><a href="#elseasync"><code>orElseAsync</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#mixing-features-then-failif-else-switch-match">Mixing Features (<code>then</code>, <code>failIf</code>, <code>orElse</code>, <code>doSwitch</code>, <code>match</code>)</a></li>
+<li><a href="#error-types">Errors Types</a>
+<ul>
+<li><a href="#built-in-error-types">Built in error types</a></li>
+</ul>
+</li>
+<li><a href="#organizing-errors">Organizing errors</a></li>
+<li><a href="#contribution-">Contribution 🤲</a></li>
+<li><a href="#credits-">Credits 🙏</a></li>
+<li><a href="#license-">License 🪪</a></li>
+</ul>
+<h1 id="give-it-a-star-">Give it a star ⭐!</h1>
+<p>Loving it? Show your support by giving this project a star!</p>
+<h1 id="getting-started-">Getting Started 🏃</h1>
+<h2 id="replace-throwing-exceptions-with-errorort">Replace throwing exceptions with <code>ErrorOr&lt;T&gt;</code></h2>
+<p>This 👇</p>
+<pre class="language-dart"><code class="language-dart">double divide(int a, int b)
+{
+    if (b == 0)
+    {
+        throw Exception("Cannot divide by zero");
+    }
+
+    return a / b;
+}
+
+try
+{
+    var result = divide(4, 2);
+    print(result * 2); // 4
+}
+on Exception catch (e)
+{
+    print(e);
+    return;
+}
+</code></pre>
+<p>Turns into this 👇</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;double&gt; divide(int a, int b)
+{
+    if (b == 0)
+    {
+        return Errors.unexpected(description: "Cannot divide by zero");
+    }
+
+    return a / b;
+}
+
+var result = divide(4, 2);
+
+if (result.isError)
+{
+    print(result.firstError.description);
+    return;
+}
+
+print(result.value * 2); // 4
+</code></pre>
+<p>Or, using <a href="#then--thenasync">then</a>/<a href="#else--elseasync">orElse</a> and <a href="#switch--switchasync">doSwitch</a>/<a href="#match--matchasync">match</a>, you can do this 👇</p>
+<pre class="language-dart"><code class="language-dart">
+divide(4, 2)
+    .then((val) =&gt; val * 2)
+    .doSwitchFirst(
+        onValue: print, // 4
+        onFirstError: (error) =&gt; print(error.description));
+</code></pre>
+<h2 id="support-for-multiple-errors">Support For Multiple errors</h2>
+<p>Internally, the <code>ErrorOr</code> object has a list of <code>Errors</code>s, so if you have multiple errors, you don't need to compromise and have only the first one.</p>
+<pre class="language-dart"><code class="language-dart">class User
+{
+    final String _name;
+
+    User._internal(this._name);
+
+    static ErrorOr&lt;User&gt; create(String name)
+    {
+        List&lt;Errors&gt; errors = [];
+
+        if (name.length &lt; 2)
+        {
+            errors.add(Errors.validation(description: "Name is too short"));
+        }
+
+        if (name.length &gt; 100)
+        {
+            errors.add(Errors.validation(description: "Name is too long"));
+        }
+
+        if (name.isEmpty)
+        {
+            errors.add(Errors.validation(description: "Name cannot be empty or whitespace only"));
+        }
+
+        if (errors.isNotEmpty)
+        {
+            return errors.toErrorOr&lt;User&gt;();
+        }
+
+        return User._internal(name).toErrorOr();
+    }
+}
+</code></pre>
+<h2 id="various-functional-methods-and-extension-methods">Various Functional Methods and Extension Methods</h2>
+<p>The <code>ErrorOr</code> object has a variety of methods that allow you to work with it in a functional way.</p>
+<p>This allows you to chain methods together, and handle the result in a clean and concise way.</p>
+<h3 id="real-world-example">Real world example</h3>
+<pre class="language-dart"><code class="language-dart">return await _userRepository.getByIdAsync(id)
+    .then((user) =&gt; user.incrementAge()
+        .then((success) =&gt; user)
+        .orElse((errors) =&gt; Errors.unexpected("Not expected to fail")))
+    .failIf((user) =&gt; !user.isOverAge(18), UserErrors.underAge)
+    .thenDo((user) =&gt; _logger.logInformation("User ${user.Id} incremented age to ${user.Age}"))
+    .thenAsync((user) =&gt; _userRepository.updateAsync(user))
+    .match(
+        (_) =&gt; noContent(),
+        (errors) =&gt; errors.toActionResult());
+</code></pre>
+<h3 id="simple-example-with-intermediate-steps">Simple Example with intermediate steps</h3>
+<h4 id="no-failure">No Failure</h4>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await "2".toErrorOr()
+    .then(int.parse) // 2
+    .failIf((val) =&gt; val &gt; 2, Errors.validation(description: "$${val} is too big") // 2
+    .thenDoAsync((val) =&gt; Future.delayed(Duration(milliseconds: val))) // Sleep for 2 milliseconds
+    .thenDo((val) =&gt; print("Finished waiting $${val} milliseconds.")) // Finished waiting 2 milliseconds.
+    .thenAsync((val) =&gt; Future.value(val * 2)) // 4
+    .then((val) =&gt; "The result is $${val}") // "The result is 4"
+    .orElse((errors) =&gt; Errors.unexpected(description: "Yikes")) // "The result is 4"
+    .matchFirst(
+        (value) =&gt; value, // "The result is 4"
+        (firstError) =&gt; "An error occurred: ${firstError.description}");
+</code></pre>
+<h4 id="failure">Failure</h4>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await "5".ToErrorOr()
+    .then(int.Parse) // 5
+    .failIf((val) =&gt; val &gt; 2, Errors.validation(description: "${val} is too big")) // Errors.validation()
+    .thenDoAsync((val) =&gt; Future.delayed(Duration(milliseconds: val))) // Errors.validation()
+    .thenDo((val) =&gt; print("Finished waiting ${val} milliseconds.")) // Errors.validation()
+    .thenAsync((val) =&gt; Future.value(val * 2)) // Errors.validation()
+    .then((val) =&gt; "The result is ${val}") // Errors.validation()
+    .orElse((errors) =&gt; Errors.unexpected(description: "Yikes")) // Errors.unexpected()
+    .matchFirst(
+        (value) =&gt; value,
+        (firstError) =&gt; "An error occurred: {firstError.description}"); // An error occurred: Yikes
+</code></pre>
+<h1 id="creating-an-erroror-instance">Creating an <code>ErrorOr</code> instance</h1>
+<h2 id="using-the-toerroror-extension-method">Using The <code>ToErrorOr</code> Extension Method</h2>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; result = 5.ToErrorOr();
+ErrorOr&lt;int&gt; result = Errors.unexpected().ToErrorOr&lt;int&gt;();
+ErrorOr&lt;int&gt; result = new[] { Errors.validation(), Errors.validation() }.ToErrorOr&lt;int&gt;();
+</code></pre>
+<h1 id="properties">Properties</h1>
+<h2 id="iserror"><code>isError</code></h2>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; result = User.create();
+
+if (result.isError)
+{
+    // the result contains one or more errors
+}
+</code></pre>
+<h2 id="value"><code>value</code></h2>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; result = User.create();
+
+if (!result.isError) // the result contains a value
+{
+    print(result.value);
+}
+</code></pre>
+<h2 id="errors"><code>errors</code></h2>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; result = User.create();
+
+if (result.isError)
+{
+    result.errors // contains the list of errors that occurred
+        .forEach((error) =&gt; print(error.description));
+}
+</code></pre>
+<h2 id="firsterror"><code>firstError</code></h2>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; result = User.create();
+
+if (result.isError)
+{
+    var firstError = result.firstError; // only the first error that occurred
+    print(firstError == result.errors[0]); // true
+}
+</code></pre>
+<h2 id="errorsoremptylist"><code>errorsOrEmptyList</code></h2>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; result = User.create();
+
+if (result.isError)
+{
+    result.errorsOrEmptyList // List&lt;Errors&gt; { /* one or more errors */  }
+    return;
+}
+
+result.errorsOrEmptyList // List&lt;Errors&gt; { }
+</code></pre>
+<h1 id="methods">Methods</h1>
+<h2 id="match"><code>match</code></h2>
+<p>The <code>match</code> method receives two functions, <code>onValue</code> and <code>onError</code>, <code>onValue</code> will be invoked if the result is success, and <code>onError</code> is invoked if the result is an error.</p>
+<h3 id="match-2"><code>match</code></h3>
+<pre class="language-dart"><code class="language-dart">String foo = result.match(
+    (value) =&gt; value,
+    (errors) =&gt; "${errors.Count} errors occurred.");
+</code></pre>
+<h3 id="matchasync"><code>matchAsync</code></h3>
+<pre class="language-dart"><code class="language-dart">String foo = await result.matchAsync(
+    (value) =&gt; Future.value(value),
+    (errors) =&gt; Future.value("${errors.Count} errors occurred."));
+</code></pre>
+<h3 id="matchfirst"><code>matchFirst</code></h3>
+<p>The <code>matchFirst</code> method receives two functions, <code>onValue</code> and <code>onError</code>, <code>onValue</code> will be invoked if the result is success, and <code>onError</code> is invoked if the result is an error.</p>
+<p>Unlike <code>match</code>, if the state is error, <code>matchFirst</code>'s <code>onError</code> function receives only the first error that occurred, not the entire list of errors.</p>
+<pre class="language-dart"><code class="language-dart">String foo = result.matchFirst(
+    (value) =&gt; value,
+    (firstError) =&gt; firstError.description);
+</code></pre>
+<h3 id="matchfirstasync"><code>matchFirstAsync</code></h3>
+<pre class="language-dart"><code class="language-dart">String foo = await result.matchFirstAsync(
+    (value) =&gt; Future.value(value),
+    (firstError) =&gt; Future.value(firstError.description));
+</code></pre>
+<h2 id="doswitch"><code>doSwitch</code></h2>
+<p>The <code>doSwitch</code> method receives two actions, <code>onValue</code> and <code>onError</code>, <code>onValue</code> will be invoked if the result is success, and <code>onError</code> is invoked if the result is an error.</p>
+<h3 id="doswitch-2"><code>doSwitch</code></h3>
+<pre class="language-dart"><code class="language-dart">result.doSwitch(
+    (value) =&gt; print(value),
+    (errors) =&gt; print("${errors.Count} errors occurred."));
+</code></pre>
+<h3 id="doswitchasync"><code>doSwitchAsync</code></h3>
+<pre class="language-dart"><code class="language-dart">await result.doSwitchAsync(
+    (value) =&gt; { print(value); return Future.value(true); },
+    (errors) =&gt; { print("${errors.Count} errors occurred."); return Future.value(true); });
+</code></pre>
+<h3 id="doswitchfirst"><code>doSwitchFirst</code></h3>
+<p>The <code>doSwitchFirst</code> method receives two actions, <code>onValue</code> and <code>onError</code>, <code>onValue</code> will be invoked if the result is success, and <code>onError</code> is invoked if the result is an error.</p>
+<p>Unlike <code>doSwitch</code>, if the state is error, <code>doSwitchFirst</code>'s <code>onError</code> function receives only the first error that occurred, not the entire list of errors.</p>
+<pre class="language-dart"><code class="language-dart">result.doSwitchFirst(
+    (value) =&gt; print(value),
+    (firstError) =&gt; print(firstError.description));
+</code></pre>
+<h3 id="doswitchfirstasync"><code>doSwitchFirstAsync</code></h3>
+<pre class="language-dart"><code class="language-dart">await result.doSwitchFirstAsync(
+    (value) =&gt; { print(value); return Future.value(true); },
+    (firstError) =&gt; { print(firstError.description); return Future.value(true); });
+</code></pre>
+<h2 id="then"><code>then</code></h2>
+<h3 id="then-2"><code>then</code></h3>
+<p><code>then</code> receives a function, and invokes it only if the result is not an error.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; foo = result
+    .then((val) =&gt; val * 2);
+</code></pre>
+<p>Multiple <code>then</code> methods can be chained together.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = result
+    .then((val) =&gt; val * 2)
+    .then((val) =&gt; "The result is ${val}");
+</code></pre>
+<p>If any of the methods return an error, the chain will break and the errors will be returned.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; Foo() =&gt; Errors.unexpected();
+
+ErrorOr&lt;String&gt; foo = result
+    .then((val) =&gt; val * 2)
+    .then((_) =&gt; getAnError())
+    .then((val) =&gt; "The result is ${val}") // this function will not be invoked
+    .then((val) =&gt; "The result is ${val}"); // this function will not be invoked
+</code></pre>
+<h3 id="thenasync"><code>thenAsync</code></h3>
+<p><code>thenAsync</code> receives an asynchronous function, and invokes it only if the result is not an error.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await result
+    .thenAsync((val) =&gt; doSomethingAsync(val))
+    .thenAsync((val) =&gt; doSomethingElseAsync("The result is ${val}"));
+</code></pre>
+<h3 id="thendo-and-thendoasync"><code>thenDo</code> and <code>thenDoAsync</code></h3>
+<p><code>thenDo</code> and <code>thenDoAsync</code> are similar to <code>then</code> and <code>thenAsync</code>, but instead of invoking a function that returns a value, they invoke an action.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = result
+    .thenDo((val) =&gt; print(val))
+    .thenDo((val) =&gt; print("The result is ${val}"));
+</code></pre>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await result
+    .thenDoAsync((val) =&gt; Future.delayed(Duration(milliseconds: val)))
+    .thenDo((val) =&gt; print("Finsihed waiting ${val} seconds."))
+    .thenDoAsync((val) =&gt; Future.value(val * 2))
+    .thenDo((val) =&gt; "The result is ${val}");
+</code></pre>
+<h3 id="mixing-then-thendo-thenasync-thendoasync">Mixing <code>then</code>, <code>thenDo</code>, <code>thenAsync</code>, <code>thenDoAsync</code></h3>
+<p>You can mix and match <code>then</code>, <code>thenDo</code>, <code>thenAsync</code>, <code>thenDoAsync</code> methods.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await result
+    .thenDoAsync((val) =&gt; Future.delayed(Duration(milliseconds: val)))
+    .then((val) =&gt; val * 2)
+    .thenAsync((val) =&gt; doSomethingAsync(val))
+    .thenDo((val) =&gt; print("Finsihed waiting ${val} seconds."))
+    .thenAsync((val) =&gt; Future.value(val * 2))
+    .then((val) =&gt; "The result is ${val}");
+</code></pre>
+<h2 id="failif"><code>failIf</code></h2>
+<p><code>failIf</code> receives a predicate and an error. If the predicate is true, <code>failIf</code> will return the error. Otherwise, it will return the value of the result.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;int&gt; foo = result
+    .failIf((val) =&gt; val &gt; 2, Errors.validation(description: "${val} is too big"));
+</code></pre>
+<p>Once an error is returned, the chain will break and the error will be returned.</p>
+<pre class="language-dart"><code class="language-dart">var result = "2".ToErrorOr()
+    .then(int.Parse) // 2
+    .failIf((val) =&gt; val &gt; 1, Errors.validation(description: "${val} is too big") // validation error
+    .then(num =&gt; num * 2) // this function will not be invoked
+    .then(num =&gt; num * 2) // this function will not be invoked
+</code></pre>
+<h2 id="orelse"><code>orElse</code></h2>
+<p><code>orElse</code> receives a value or a function. If the result is an error, <code>orElse</code> will return the value or invoke the function. Otherwise, it will return the value of the result.</p>
+<h3 id="orelse-2"><code>orElse</code></h3>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = result
+    .orElse("fallback value");
+</code></pre>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = result
+    .orElse((errors) =&gt; "${errors.Count} errors occurred.");
+</code></pre>
+<h3 id="orelseasync"><code>orElseAsync</code></h3>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await result
+    .orElseAsync(Future.value("fallback value"));
+</code></pre>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await result
+    .orElseAsync((errors) =&gt; Future.value("${errors.Count} errors occurred."));
+</code></pre>
+<h1 id="mixing-features-then-failif-orelse-doswitch-match">Mixing Features (<code>then</code>, <code>failIf</code>, <code>orElse</code>, <code>doSwitch</code>, <code>match</code>)</h1>
+<p>You can mix <code>then</code>, <code>failIf</code>, <code>orElse</code>, <code>doSwitch</code> and <code>match</code> methods together.</p>
+<pre class="language-dart"><code class="language-dart">ErrorOr&lt;String&gt; foo = await result
+    .thenDoAsync((val) =&gt; Future.delayed(Duration(milliseconds: val)))
+    .failIf((val) =&gt; val &gt; 2, Errors.validation(description: "${val} is too big"))
+    .thenDo((val) =&gt; print("Finished waiting ${val} seconds."))
+    .thenAsync((val) =&gt; Future.value(val * 2))
+    .then((val) =&gt; "The result is ${val}")
+    .orElse((errors) =&gt; Errors.unexpected())
+    .matchFirst(
+        (value) =&gt; value,
+        (firstError) =&gt; "An error occurred: {firstError.description}");
+</code></pre>
+<h1 id="errors-types">Errors Types</h1>
+<p>Each <code>Errors</code> instance has a <code>Type</code> property, which is an enum value that represents the type of the error.</p>
+<h2 id="built-in-error-types">Built in error types</h2>
+<p>The following error types are built in:</p>
+<pre class="language-dart"><code class="language-dart">enum ErrorType {
+  failure,
+  unexpected,
+  validation,
+  conflict,
+  notFound,
+  unauthorized,
+  forbidden,
+}
+</code></pre>
+<p>Each error type has a static method that creates an error of that type. For example:</p>
+<pre class="language-dart"><code class="language-dart">var error = Errors.notFound();
+</code></pre>
+<p>optionally, you can pass a code, description and metadata to the error:</p>
+<pre class="language-dart"><code class="language-dart">  var user = Object();
+  var error = Errors.unexpected(
+      code: "User.ShouldNeverHappen",
+      description: "A user error that should never happen",
+      metadata: Map.fromEntries([
+        MapEntry("user", user),
+      ]));
+</code></pre>
+<p>The <code>ErrorType</code> enum is a good way to categorize errors.</p>
+<h1 id="organizing-errors">Organizing errors</h1>
+<p>A nice approach, is creating a static class with the expected errors. For example:</p>
+<pre class="language-dart"><code class="language-dart">class DivisionErrors
+{
+    static Errors cannotdivideByZero = Errors.unexpected(
+        code: "Division.CannotdivideByZero",
+        description: "Cannot divide by zero.");
+}
+</code></pre>
+<p>Which can later be used as following 👇</p>
+<pre class="language-dart"><code class="language-dart">public ErrorOr&lt;double&gt; divide(int a, int b)
+{
+    if (b == 0)
+    {
+        return DivisionErrors.cannotdivideByZero;
+    }
+
+    return a / b;
+}
+</code></pre>
+<h1 id="contribution-">Contribution 🤲</h1>
+<p>If you have any questions, comments, or suggestions, please open an issue or create a pull request 🙂</p>
+<h1 id="credits-">Credits 🙏</h1>
+<ul>
+<li><a href="https://github.com/amantinband/error-or">ErrorOr</a> - An awesome library which provides C# style discriminated unions behavior for C#</li>
+</ul>
+<h1 id="license">License</h1>
+<p>This project is licensed under the terms of the <a href="https://github.com/lucafabbri/flutter-error-or/blob/master/packages/error_or_plus/LICENSE">MIT</a> license.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="error_or_plus">
+  <span class="name"><a href="error_or_plus/error_or_plus-library.html">error_or_plus</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">error_or_plus package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">error_or_plus</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="error_or_plus/error_or_plus-library.html">error_or_plus</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    error_or_plus
+      0.1.1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
