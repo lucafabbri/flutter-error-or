@@ -50,7 +50,7 @@ This library is a porting of [ErrorOr](https://github.com/amantinband/error-or) 
 - [Mixing Features (`then`, `failIf`, `orElse`, `doSwitch`, `match`)](#mixing-features-then-failif-else-switch-match)
 - [Errors Types](#error-types)
   - [Built in error types](#built-in-error-types)
-- [Organizing errors](#organizing-errors)(#mediator--fluentvalidation--erroror-)
+- [Organizing errors](#organizing-errors)
 - [Contribution 🤲](#contribution-)
 - [Credits 🙏](#credits-)
 - [License 🪪](#license-)
@@ -554,9 +554,9 @@ The `ErrorType` enum is a good way to categorize errors.
 A nice approach, is creating a static class with the expected errors. For example:
 
 ```dart
-public static partial class DivisionErrors
+class DivisionErrors
 {
-    public static Errors CannotdivideByZero = Errors.unexpected(
+    static Errors cannotdivideByZero = Errors.unexpected(
         code: "Division.CannotdivideByZero",
         description: "Cannot divide by zero.");
 }
@@ -569,7 +569,7 @@ public ErrorOr<double> divide(int a, int b)
 {
     if (b == 0)
     {
-        return DivisionErrors.CannotdivideByZero;
+        return DivisionErrors.cannotdivideByZero;
     }
 
     return a / b;
@@ -586,4 +586,4 @@ If you have any questions, comments, or suggestions, please open an issue or cre
 
 # License
 
-This project is licensed under the terms of the [MIT](https://github.com/lucafabbri/flutter-error-or/LICENSE) license.
+This project is licensed under the terms of the [MIT](https://github.com/lucafabbri/flutter-error-or/blob/master/packages/error_or_plus/LICENSE) license.
