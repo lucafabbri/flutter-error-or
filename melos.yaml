@@ -1,0 +1,5 @@
+name: error_or
+
+packages:
+  - apps/**
+  - packages/**

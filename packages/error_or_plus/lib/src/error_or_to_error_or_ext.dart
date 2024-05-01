@@ -1,4 +1,4 @@
-import 'package:error_or_plus/error_or_plus.dart';
+import '../error_or_plus.dart';
 
 extension ValueToErrorOrExt<TValue> on TValue {
   ErrorOr<TValue> toErrorOr() => ErrorOr.fromValue(this);

@@ -1,4 +1,4 @@
-import 'package:error_or_plus/error_or_plus.dart';
+import '../error_or_plus.dart';
 
 class Errors {
   final String code;

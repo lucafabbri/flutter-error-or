@@ -1,4 +1,4 @@
-import 'package:error_or_plus/error_or_plus.dart';
+import '../../packages/error_or_plus/lib/error_or_plus.dart';
 
 void main() {
   try {
