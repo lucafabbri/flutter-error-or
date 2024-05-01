@@ -1,5 +1,15 @@
 name: error_or
 
+repository: https://github.com/lucafabbri/flutter-error-or
+
 packages:
-  - apps/**
   - packages/**
+
+ignore:
+  - 'packages/**/example'
+
+scripts:
+  analyze:
+    exec: dart analyze .
+  doc:
+    exec: dart doc .
