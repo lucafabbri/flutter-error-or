@@ -1,7 +1,4 @@
-import 'dart:math';
-
-import 'package:error_or/error_or.dart';
-import 'package:error_or/src/error_or_else_ext.dart';
+import 'package:error_or_plus/error_or_plus.dart';
 import 'package:test/test.dart';
 
 void main() {

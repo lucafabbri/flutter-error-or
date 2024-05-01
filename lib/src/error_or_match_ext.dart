@@ -1,4 +1,4 @@
-import 'package:error_or/error_or.dart';
+import 'package:error_or_plus/error_or_plus.dart';
 
 extension ErrorOrMatchExt<TValue, TNextValue> on Future<ErrorOr<TValue>> {
   Future<TNextValue> match(

@@ -1,5 +1,7 @@
 <div align="center">
 
+# ErrorOr Plus
+
 This library is a porting of [ErrorOr](https://github.com/amantinband/error-or) for C# made by [Amichai Mantinband](https://github.com/amantinband)
 
 ### A simple, fluent discriminated union of an error or a result.
