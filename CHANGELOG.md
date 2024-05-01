@@ -1,10 +1,14 @@
+## 0.1.1
+
+- **FIX**: project structure.
+
 ## 0.1.0
 
- - **FIX**: documentation links.
+- **FIX**: documentation links.
 
 ## 0.0.2
 
- - **FEAT**: error or.
+- **FEAT**: error or.
 
 ## 0.0.1
 

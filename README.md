@@ -586,4 +586,4 @@ If you have any questions, comments, or suggestions, please open an issue or cre
 
 # License
 
-This project is licensed under the terms of the [MIT](https://github.com/lucafabbri/flutter-error-or/blob/master/packages/error_or_plus/LICENSE) license.
+This project is licensed under the terms of the [MIT](https://github.com/lucafabbri/flutter-error-or/blob/master/LICENSE) license.
