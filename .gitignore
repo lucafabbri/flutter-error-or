@@ -1,5 +1,5 @@
 .idea
-.vs_code
+.vscode
 .dart_tool/
 pubspec.lock
 pubspec_overrides.yaml

@@ -1,32 +1,14 @@
-import '../lib/error_or_plus.dart';
+import 'package:error_or_plus/error_or_plus.dart';
 
-void main() {
-  try {
-    var result = divide(4, 2);
-    print(result * 2); // 4
-  } on Exception catch (e) {
-    print(e);
-    return;
-  }
-  var user = Object();
-  var error = Errors.unexpected(
-      code: "User.ShouldNeverHappen",
-      description: "A user error that should never happen",
-      metadata: Map.fromEntries([
-        MapEntry("user", user),
-      ]));
-}
-
-double divide(int a, int b) {
-  if (b == 0) {
-    throw Exception("Cannot divide by zero");
-  }
-
-  return a / b;
+main() {
+  User.create("Luca Fabbri")
+      .thenDo((value) => print("${value.name} was created."));
 }
 
 class User {
   final String _name;
+
+  String get name => _name;
 
   User._internal(this._name);
 
