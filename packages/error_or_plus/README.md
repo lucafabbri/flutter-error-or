@@ -6,7 +6,7 @@ This library is a porting of [ErrorOr](https://github.com/amantinband/error-or) 
 
 ### A simple, fluent discriminated union of an error or a result.
 
-`dart pub add error-or`
+`dart pub add error_or_plus`
 
 </div>
 
