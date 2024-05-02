@@ -1,6 +1,6 @@
 name: error_or_plus
 description: A simple, fluent discriminated union of an error or a result. Inspired by ErrorOr for .net by Amantiband
-version: 0.2.0
+version: 0.2.1
 repository: https://github.com/lucafabbri/flutter-error-or
 
 environment:

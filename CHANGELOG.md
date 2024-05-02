@@ -1,3 +1,7 @@
+## 0.2.1
+
+- **FIX**: documentation examples
+
 ## 0.2.0
 
 - **FEAT**: flutter doc comments.

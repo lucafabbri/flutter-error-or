@@ -175,7 +175,7 @@ This allows you to chain methods together, and handle the result in a clean and 
 return await _userRepository.getByIdAsync(id)
     .then((user) => user.incrementAge()
         .then((success) => user)
-        .orElse((errors) => Errors.unexpected("Not expected to fail")))
+        .orElse(errorOnErrorHandler: (errors) => Errors.unexpected("Not expected to fail")))
     .failIf((user) => !user.isOverAge(18), UserErrors.underAge)
     .thenDo((user) => _logger.logInformation("User ${user.Id} incremented age to ${user.Age}"))
     .thenAsync((user) => _userRepository.updateAsync(user))
@@ -196,7 +196,7 @@ ErrorOr<String> foo = await "2".toErrorOr()
     .thenDo((val) => print("Finished waiting $${val} milliseconds.")) // Finished waiting 2 milliseconds.
     .thenAsync((val) => Future.value(val * 2)) // 4
     .then((val) => "The result is $${val}") // "The result is 4"
-    .orElse((errors) => Errors.unexpected(description: "Yikes")) // "The result is 4"
+    .orElse(errorOnErrorHandler: (errors) => Errors.unexpected(description: "Yikes")) // "The result is 4"
     .matchFirst(
         (value) => value, // "The result is 4"
         (firstError) => "An error occurred: ${firstError.description}");
@@ -212,7 +212,7 @@ ErrorOr<String> foo = await "5".ToErrorOr()
     .thenDo((val) => print("Finished waiting ${val} milliseconds.")) // Errors.validation()
     .thenAsync((val) => Future.value(val * 2)) // Errors.validation()
     .then((val) => "The result is ${val}") // Errors.validation()
-    .orElse((errors) => Errors.unexpected(description: "Yikes")) // Errors.unexpected()
+    .orElse(errorOnErrorHandler: (errors) => Errors.unexpected(description: "Yikes")) // Errors.unexpected()
     .matchFirst(
         (value) => value,
         (firstError) => "An error occurred: {firstError.description}"); // An error occurred: Yikes
@@ -225,7 +225,7 @@ ErrorOr<String> foo = await "5".ToErrorOr()
 ```dart
 ErrorOr<int> result = 5.ToErrorOr();
 ErrorOr<int> result = Errors.unexpected().ToErrorOr<int>();
-ErrorOr<int> result = new[] { Errors.validation(), Errors.validation() }.ToErrorOr<int>();
+ErrorOr<int> result = [Errors.validation(), Errors.validation()].ToErrorOr<int>();
 ```
 
 # Properties
@@ -348,8 +348,8 @@ result.doSwitch(
 
 ```dart
 await result.doSwitchAsync(
-    (value) => { print(value); return Future.value(true); },
-    (errors) => { print("${errors.Count} errors occurred."); return Future.value(true); });
+    (value) { print(value); return Future.value(true); },
+    (errors) { print("${errors.Count} errors occurred."); return Future.value(true); });
 ```
 
 ### `doSwitchFirst`
@@ -368,8 +368,8 @@ result.doSwitchFirst(
 
 ```dart
 await result.doSwitchFirstAsync(
-    (value) => { print(value); return Future.value(true); },
-    (firstError) => { print(firstError.description); return Future.value(true); });
+    (value) { print(value); return Future.value(true); },
+    (firstError) { print(firstError.description); return Future.value(true); });
 ```
 
 ## `then`
@@ -472,24 +472,24 @@ var result = "2".ToErrorOr()
 
 ```dart
 ErrorOr<String> foo = result
-    .orElse("fallback value");
+    .orElse(valueOnError: "fallback value");
 ```
 
 ```dart
 ErrorOr<String> foo = result
-    .orElse((errors) => "${errors.Count} errors occurred.");
+    .orElse(valueOnErrorHandler: (errors) => "${errors.Count} errors occurred.");
 ```
 
 ### `orElseAsync`
 
 ```dart
 ErrorOr<String> foo = await result
-    .orElseAsync(Future.value("fallback value"));
+    .orElseAsync(valueOnError: Future.value("fallback value"));
 ```
 
 ```dart
 ErrorOr<String> foo = await result
-    .orElseAsync((errors) => Future.value("${errors.Count} errors occurred."));
+    .orElseAsync(valueOnErrorHandler: (errors) => Future.value("${errors.Count} errors occurred."));
 ```
 
 # Mixing Features (`then`, `failIf`, `orElse`, `doSwitch`, `match`)
@@ -503,7 +503,7 @@ ErrorOr<String> foo = await result
     .thenDo((val) => print("Finished waiting ${val} seconds."))
     .thenAsync((val) => Future.value(val * 2))
     .then((val) => "The result is ${val}")
-    .orElse((errors) => Errors.unexpected())
+    .orElse(errorOnErrorHandler: (errors) => Errors.unexpected())
     .matchFirst(
         (value) => value,
         (firstError) => "An error occurred: {firstError.description}");
