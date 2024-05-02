@@ -1,6 +1,7 @@
 ## 0.2.1
 
 - **FIX**: documentation examples
+- **FIX**: environment target range
 
 ## 0.2.0
 
