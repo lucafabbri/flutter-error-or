@@ -1,3 +1,7 @@
+## 0.2.3
+
+- **FIX**: publish with github workflows
+
 ## 0.2.1
 
 - **FIX**: documentation examples
