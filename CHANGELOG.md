@@ -1,6 +1,10 @@
 ## 1.0.0
 
-- \*\*BREAKING CHANGE: renames "Then" to "Also" to avoid conflicts with Future.then()
+- **FIX**: pubspec version
+
+## 1.0.0
+
+- **BREAKING CHANGE**: renames "Then" to "Also" to avoid conflicts with Future.then()
 
 ## 0.2.3
 
