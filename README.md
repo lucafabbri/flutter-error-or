@@ -38,16 +38,16 @@ This library is a porting of [ErrorOr](https://github.com/amantinband/error-or) 
     - [`doSwitchAsync`](#switchasync)
     - [`doSwitchFirst`](#switchfirst)
     - [`doSwitchFirstAsync`](#switchfirstasync)
-  - [`then`](#then)
-    - [`then`](#then-1)
-    - [`thenAsync`](#thenasync)
-    - [`thenDo` and `thenDoAsync`](#thendo-and-thendoasync)
-    - [Mixing `then`, `thenDo`, `thenAsync`, `thenDoAsync`](#mixing-then-thendo-thenasync-thendoasync)
+  - [`also`](#also)
+    - [`also`](#also-1)
+    - [`alsoAsync`](#alsoasync)
+    - [`alsoDo` and `alsoDoAsync`](#alsodo-and-alsodoasync)
+    - [Mixing `also`, `alsoDo`, `alsoAsync`, `alsoDoAsync`](#mixing-also-alsodo-alsoasync-alsodoasync)
   - [`failIf`](#failif)
   - [`orElse`](#else)
     - [`orElse`](#else-1)
     - [`orElseAsync`](#elseasync)
-- [Mixing Features (`then`, `failIf`, `orElse`, `doSwitch`, `match`)](#mixing-features-then-failif-else-switch-match)
+- [Mixing Features (`also`, `failIf`, `orElse`, `doSwitch`, `match`)](#mixing-features-also-failif-else-switch-match)
 - [Errors Types](#error-types)
   - [Built in error types](#built-in-error-types)
 - [Organizing errors](#organizing-errors)
@@ -112,12 +112,12 @@ if (result.isError)
 print(result.value * 2); // 4
 ```
 
-Or, using [then](#then--thenasync)/[orElse](#else--elseasync) and [doSwitch](#switch--switchasync)/[match](#match--matchasync), you can do this 👇
+Or, using [also](#also--alsoasync)/[orElse](#else--elseasync) and [doSwitch](#switch--switchasync)/[match](#match--matchasync), you can do this 👇
 
 ```dart
 
 divide(4, 2)
-    .then((val) => val * 2)
+    .also((val) => val * 2)
     .doSwitchFirst(
         onValue: print, // 4
         onFirstError: (error) => print(error.description));
@@ -173,12 +173,12 @@ This allows you to chain methods together, and handle the result in a clean and 
 
 ```dart
 return await _userRepository.getByIdAsync(id)
-    .then((user) => user.incrementAge()
-        .then((success) => user)
+    .also((user) => user.incrementAge()
+        .also((success) => user)
         .orElse(errorOnErrorHandler: (errors) => Errors.unexpected("Not expected to fail")))
     .failIf((user) => !user.isOverAge(18), UserErrors.underAge)
-    .thenDo((user) => _logger.logInformation("User ${user.Id} incremented age to ${user.Age}"))
-    .thenAsync((user) => _userRepository.updateAsync(user))
+    .alsoDo((user) => _logger.logInformation("User ${user.Id} incremented age to ${user.Age}"))
+    .alsoAsync((user) => _userRepository.updateAsync(user))
     .match(
         (_) => noContent(),
         (errors) => errors.toActionResult());
@@ -190,12 +190,12 @@ return await _userRepository.getByIdAsync(id)
 
 ```dart
 ErrorOr<String> foo = await "2".toErrorOr()
-    .then(int.parse) // 2
+    .also(int.parse) // 2
     .failIf((val) => val > 2, Errors.validation(description: "$${val} is too big") // 2
-    .thenDoAsync((val) => Future.delayed(Duration(milliseconds: val))) // Sleep for 2 milliseconds
-    .thenDo((val) => print("Finished waiting $${val} milliseconds.")) // Finished waiting 2 milliseconds.
-    .thenAsync((val) => Future.value(val * 2)) // 4
-    .then((val) => "The result is $${val}") // "The result is 4"
+    .alsoDoAsync((val) => Future.delayed(Duration(milliseconds: val))) // Sleep for 2 milliseconds
+    .alsoDo((val) => print("Finished waiting $${val} milliseconds.")) // Finished waiting 2 milliseconds.
+    .alsoAsync((val) => Future.value(val * 2)) // 4
+    .also((val) => "The result is $${val}") // "The result is 4"
     .orElse(errorOnErrorHandler: (errors) => Errors.unexpected(description: "Yikes")) // "The result is 4"
     .matchFirst(
         (value) => value, // "The result is 4"
@@ -206,12 +206,12 @@ ErrorOr<String> foo = await "2".toErrorOr()
 
 ```dart
 ErrorOr<String> foo = await "5".ToErrorOr()
-    .then(int.Parse) // 5
+    .also(int.Parse) // 5
     .failIf((val) => val > 2, Errors.validation(description: "${val} is too big")) // Errors.validation()
-    .thenDoAsync((val) => Future.delayed(Duration(milliseconds: val))) // Errors.validation()
-    .thenDo((val) => print("Finished waiting ${val} milliseconds.")) // Errors.validation()
-    .thenAsync((val) => Future.value(val * 2)) // Errors.validation()
-    .then((val) => "The result is ${val}") // Errors.validation()
+    .alsoDoAsync((val) => Future.delayed(Duration(milliseconds: val))) // Errors.validation()
+    .alsoDo((val) => print("Finished waiting ${val} milliseconds.")) // Errors.validation()
+    .alsoAsync((val) => Future.value(val * 2)) // Errors.validation()
+    .also((val) => "The result is ${val}") // Errors.validation()
     .orElse(errorOnErrorHandler: (errors) => Errors.unexpected(description: "Yikes")) // Errors.unexpected()
     .matchFirst(
         (value) => value,
@@ -372,23 +372,23 @@ await result.doSwitchFirstAsync(
     (firstError) { print(firstError.description); return Future.value(true); });
 ```
 
-## `then`
+## `also`
 
-### `then`
+### `also`
 
-`then` receives a function, and invokes it only if the result is not an error.
+`also` receives a function, and invokes it only if the result is not an error.
 
 ```dart
 ErrorOr<int> foo = result
-    .then((val) => val * 2);
+    .also((val) => val * 2);
 ```
 
-Multiple `then` methods can be chained together.
+Multiple `also` methods can be chained together.
 
 ```dart
 ErrorOr<String> foo = result
-    .then((val) => val * 2)
-    .then((val) => "The result is ${val}");
+    .also((val) => val * 2)
+    .also((val) => "The result is ${val}");
 ```
 
 If any of the methods return an error, the chain will break and the errors will be returned.
@@ -397,52 +397,52 @@ If any of the methods return an error, the chain will break and the errors will 
 ErrorOr<int> Foo() => Errors.unexpected();
 
 ErrorOr<String> foo = result
-    .then((val) => val * 2)
-    .then((_) => getAnError())
-    .then((val) => "The result is ${val}") // this function will not be invoked
-    .then((val) => "The result is ${val}"); // this function will not be invoked
+    .also((val) => val * 2)
+    .also((_) => getAnError())
+    .also((val) => "The result is ${val}") // this function will not be invoked
+    .also((val) => "The result is ${val}"); // this function will not be invoked
 ```
 
-### `thenAsync`
+### `alsoAsync`
 
-`thenAsync` receives an asynchronous function, and invokes it only if the result is not an error.
+`alsoAsync` receives an asynchronous function, and invokes it only if the result is not an error.
 
 ```dart
 ErrorOr<String> foo = await result
-    .thenAsync((val) => doSomethingAsync(val))
-    .thenAsync((val) => doSomethingElseAsync("The result is ${val}"));
+    .alsoAsync((val) => doSomethingAsync(val))
+    .alsoAsync((val) => doSomethingElseAsync("The result is ${val}"));
 ```
 
-### `thenDo` and `thenDoAsync`
+### `alsoDo` and `alsoDoAsync`
 
-`thenDo` and `thenDoAsync` are similar to `then` and `thenAsync`, but instead of invoking a function that returns a value, they invoke an action.
+`alsoDo` and `alsoDoAsync` are similar to `also` and `alsoAsync`, but instead of invoking a function that returns a value, they invoke an action.
 
 ```dart
 ErrorOr<String> foo = result
-    .thenDo((val) => print(val))
-    .thenDo((val) => print("The result is ${val}"));
+    .alsoDo((val) => print(val))
+    .alsoDo((val) => print("The result is ${val}"));
 ```
 
 ```dart
 ErrorOr<String> foo = await result
-    .thenDoAsync((val) => Future.delayed(Duration(milliseconds: val)))
-    .thenDo((val) => print("Finsihed waiting ${val} seconds."))
-    .thenDoAsync((val) => Future.value(val * 2))
-    .thenDo((val) => "The result is ${val}");
+    .alsoDoAsync((val) => Future.delayed(Duration(milliseconds: val)))
+    .alsoDo((val) => print("Finsihed waiting ${val} seconds."))
+    .alsoDoAsync((val) => Future.value(val * 2))
+    .alsoDo((val) => "The result is ${val}");
 ```
 
-### Mixing `then`, `thenDo`, `thenAsync`, `thenDoAsync`
+### Mixing `also`, `alsoDo`, `alsoAsync`, `alsoDoAsync`
 
-You can mix and match `then`, `thenDo`, `thenAsync`, `thenDoAsync` methods.
+You can mix and match `also`, `alsoDo`, `alsoAsync`, `alsoDoAsync` methods.
 
 ```dart
 ErrorOr<String> foo = await result
-    .thenDoAsync((val) => Future.delayed(Duration(milliseconds: val)))
-    .then((val) => val * 2)
-    .thenAsync((val) => doSomethingAsync(val))
-    .thenDo((val) => print("Finsihed waiting ${val} seconds."))
-    .thenAsync((val) => Future.value(val * 2))
-    .then((val) => "The result is ${val}");
+    .alsoDoAsync((val) => Future.delayed(Duration(milliseconds: val)))
+    .also((val) => val * 2)
+    .alsoAsync((val) => doSomethingAsync(val))
+    .alsoDo((val) => print("Finsihed waiting ${val} seconds."))
+    .alsoAsync((val) => Future.value(val * 2))
+    .also((val) => "The result is ${val}");
 ```
 
 ## `failIf`
@@ -458,10 +458,10 @@ Once an error is returned, the chain will break and the error will be returned.
 
 ```dart
 var result = "2".ToErrorOr()
-    .then(int.Parse) // 2
+    .also(int.Parse) // 2
     .failIf((val) => val > 1, Errors.validation(description: "${val} is too big") // validation error
-    .then(num => num * 2) // this function will not be invoked
-    .then(num => num * 2) // this function will not be invoked
+    .also(num => num * 2) // this function will not be invoked
+    .also(num => num * 2) // this function will not be invoked
 ```
 
 ## `orElse`
@@ -492,17 +492,17 @@ ErrorOr<String> foo = await result
     .orElseAsync(valueOnErrorHandler: (errors) => Future.value("${errors.Count} errors occurred."));
 ```
 
-# Mixing Features (`then`, `failIf`, `orElse`, `doSwitch`, `match`)
+# Mixing Features (`also`, `failIf`, `orElse`, `doSwitch`, `match`)
 
-You can mix `then`, `failIf`, `orElse`, `doSwitch` and `match` methods together.
+You can mix `also`, `failIf`, `orElse`, `doSwitch` and `match` methods together.
 
 ```dart
 ErrorOr<String> foo = await result
-    .thenDoAsync((val) => Future.delayed(Duration(milliseconds: val)))
+    .alsoDoAsync((val) => Future.delayed(Duration(milliseconds: val)))
     .failIf((val) => val > 2, Errors.validation(description: "${val} is too big"))
-    .thenDo((val) => print("Finished waiting ${val} seconds."))
-    .thenAsync((val) => Future.value(val * 2))
-    .then((val) => "The result is ${val}")
+    .alsoDo((val) => print("Finished waiting ${val} seconds."))
+    .alsoAsync((val) => Future.value(val * 2))
+    .also((val) => "The result is ${val}")
     .orElse(errorOnErrorHandler: (errors) => Errors.unexpected())
     .matchFirst(
         (value) => value,

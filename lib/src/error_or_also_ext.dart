@@ -19,11 +19,11 @@ extension ErrorOrDoThenExt<TValue> on Future<ErrorOr<TValue>> {
   ///
   /// Returns:
   ///   A `Future<ErrorOr<TNextValue>>` is being returned.
-  Future<ErrorOr<TNextValue>> then<TNextValue>(
+  Future<ErrorOr<TNextValue>> also<TNextValue>(
     ErrorOr<TNextValue> Function(TValue value) onValue,
   ) async {
     var result = await this;
-    return result.then(onValue);
+    return result.also(onValue);
   }
 
   /// The `thenDo` function takes a callback function and applies it to the value inside a
@@ -36,11 +36,11 @@ extension ErrorOrDoThenExt<TValue> on Future<ErrorOr<TValue>> {
   ///
   /// Returns:
   ///   A `Future<ErrorOr<TValue>>` is being returned.
-  Future<ErrorOr<TValue>> thenDo(
+  Future<ErrorOr<TValue>> alsoDo(
     Function(TValue value) onValue,
   ) async {
     var result = await this;
-    return result.thenDo(onValue);
+    return result.alsoDo(onValue);
   }
 
   /// The `thenAsync` function takes a callback that operates on a value wrapped in a `Future` and returns
@@ -54,11 +54,11 @@ extension ErrorOrDoThenExt<TValue> on Future<ErrorOr<TValue>> {
   /// Returns:
   ///   The `thenAsync` method is returning a `Future` that will eventually contain the result of applying
   /// the `onValue` function to the value inside the original `Future`.
-  Future thenAsync<TNextValue>(
+  Future<ErrorOr<TNextValue>> alsoAsync<TNextValue>(
     Future<ErrorOr<TNextValue>> Function(TValue value) onValue,
   ) async {
     var result = await this;
-    return await result.thenAsync(onValue);
+    return await result.alsoAsync(onValue);
   }
 
   /// The `thenDoAsync` function takes a future value, applies an asynchronous function to it, and returns
@@ -70,10 +70,10 @@ extension ErrorOrDoThenExt<TValue> on Future<ErrorOr<TValue>> {
   ///
   /// Returns:
   ///   A `Future<ErrorOr<TValue>>` is being returned.
-  Future<ErrorOr<TValue>> thenDoAsync(
+  Future<ErrorOr<TValue>> alsoDoAsync(
     Future Function(TValue value) onValue,
   ) async {
     var result = await this;
-    return await result.thenDoAsync(onValue);
+    return await result.alsoDoAsync(onValue);
   }
 }

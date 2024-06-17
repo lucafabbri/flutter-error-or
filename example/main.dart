@@ -1,8 +1,12 @@
 import 'package:error_or_plus/error_or_plus.dart';
 
 main() {
-  User.create("Luca Fabbri")
-      .thenDo((value) => print("${value.name} was created."));
+  User.create("test").alsoDo((value) => print("${value.name} was created."));
+
+  var boolResult = User.create("test")
+      .also<bool>((_) => true.toErrorOr())
+      .orElse(valueOnError: false)
+      .value;
 }
 
 class User {

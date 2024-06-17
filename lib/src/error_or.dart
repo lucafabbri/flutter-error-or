@@ -1,24 +1,18 @@
 import '../error_or_plus.dart';
 
-/// The `ErrorOr` class in Dart provides a way to handle values that may contain errors, allowing for
-/// error handling and chaining operations based on the presence of errors.
+/// Represents a value that can either be an error or a valid value of type [TValue].
 class ErrorOr<TValue> {
   final TValue? _value;
+
   final List<Errors> _errors;
 
-  /// The `static final noFirstError` declaration in the `ErrorOr` class is creating a constant instance
-  /// of the `Errors` class with a specific code and description. This constant represents a scenario
-  /// where there is no first error to retrieve from a successful `ErrorOr` instance. It is used as a
-  /// default value when attempting to access the first error in a successful `ErrorOr` instance.
+  /// A static field representing an unexpected error when trying to retrieve the first error from a successful [ErrorOr].
   static final noFirstError = Errors.unexpected(
     code: "ErrorOr.NoFirstError",
     description: "First error cannot be retrieved from a successful ErrorOr.",
   );
 
-  /// The `static final noErrors` declaration in the `ErrorOr` class is creating a constant instance of
-  /// the `Errors` class with a specific code and description. This constant represents a scenario where
-  /// an error list cannot be retrieved from a successful `ErrorOr` instance. It is used as a default
-  /// value when attempting to access the error list in a successful `ErrorOr` instance.
+  /// A static instance of [Errors.unexpected] representing the absence of any errors.
   static final noErrors = Errors.unexpected(
     code: "ErrorOr.NoErrors",
     description: "Error list cannot be retrieved from a successful ErrorOr.",
@@ -26,90 +20,39 @@ class ErrorOr<TValue> {
 
   final bool _isError;
 
-  /// The `bool get isError => _isError;` in the `ErrorOr` class is creating a getter method named
-  /// `isError` that returns the `_isError` property of the class. This getter method allows external
-  /// code to access the `_isError` property of an `ErrorOr` instance without directly accessing the
-  /// property itself. It provides a convenient way to check if the current `ErrorOr` instance
-  /// represents an error state.
+  /// Indicates whether the current instance represents an error.
   bool get isError => _isError;
 
-  /// The `List<Errors> get errors => _isError ? _errors : [noErrors];` in the `ErrorOr` class is a
-  /// getter method named `errors` that returns a list of errors.
+  /// Returns a list of errors if the instance represents an error; otherwise, returns a list containing [noErrors].
   List<Errors> get errors => _isError ? _errors : [noErrors];
 
-  /// The `List<Errors> get errorsOrEmptyList => _isError ? _errors : [];` in the `ErrorOr` class is a
-  /// getter method named `errorsOrEmptyList` that returns a list of errors if the current `ErrorOr`
-  /// instance represents an error state (`_isError` is true). If there are errors present, it returns
-  /// the `_errors` list. If there are no errors (i.e., `_isError` is false), it returns an empty list
-  /// `[]`.
+  /// Returns a list of errors if the instance represents an error; otherwise, returns an empty list.
   List<Errors> get errorsOrEmptyList => _isError ? _errors : [];
 
-  /// The `ErrorOr.fromErrors(List<Errors> errors)` constructor in the `ErrorOr` class is creating an
-  /// instance of `ErrorOr` with a list of errors. It initializes the `_errors` property of the
-  /// `ErrorOr` instance with the provided list of errors, sets the `_value` property to `null` since
-  /// there is no value associated with errors, and determines the `_isError` property based on whether
-  /// the list of errors is not empty.
+  /// Constructs an [ErrorOr] instance representing an error with the given list of [errors].
   ErrorOr.fromErrors(List<Errors> errors)
       : _errors = errors,
         _value = null,
         _isError = errors.isNotEmpty;
 
-  /// The `ErrorOr.fromError(Errors error)` constructor in the `ErrorOr` class is creating an instance
-  /// of `ErrorOr` with a single error. It initializes the `_errors` property of the `ErrorOr` instance
-  /// with a list containing the provided error, sets the `_value` property to `null` since there is no
-  /// value associated with the error, and sets the `_isError` property to true to indicate that this
-  /// instance represents an error state.
+  /// Constructs an [ErrorOr] instance representing an error with the given [error].
   ErrorOr.fromError(Errors error)
       : _errors = [error],
         _value = null,
         _isError = true;
 
-  /// The `ErrorOr.fromValue(TValue value)` constructor in the `ErrorOr` class is creating an instance
-  /// of `ErrorOr` with a successful value. It initializes the `_value` property of the `ErrorOr`
-  /// instance with the provided value, sets the `_errors` property to an empty list since there are no
-  /// errors associated with the value, and sets the `_isError` property to false to indicate that this
-  /// instance represents a successful state without errors.
+  /// Constructs an [ErrorOr] instance representing a value with the given [value].
   ErrorOr.fromValue(TValue value)
       : _errors = [],
         _value = value,
         _isError = false;
 
-  /// The line `TValue get value => _value!;` in the `ErrorOr` class is creating a getter method named
-  /// `value` that returns the `_value` property of the class. The `!` operator is used to assert that
-  /// `_value` is non-nullable, meaning it cannot be null. This getter method allows external code to
-  /// access the `_value` property of an `ErrorOr` instance and retrieve the value it holds.
+  /// Returns the value if the instance represents a value; otherwise, throws an exception.
   TValue get value => _value!;
 
-  /// The `Errors get firstError => _isError ? _errors.first : noFirstError;` line in the `ErrorOr`
-  /// class is creating a getter method named `firstError`. This getter method is used to retrieve the
-  /// first error in the `_errors` list if the `ErrorOr` instance represents an error state (`_isError`
-  /// is true).
+  /// Returns the first error if the instance represents an error; otherwise, returns [noFirstError].
   Errors get firstError => _isError ? _errors.first : noFirstError;
 
-  /// The `orElse` function in Dart returns an `ErrorOr` object based on specified error handling logic or
-  /// default values.
-  ///
-  /// Args:
-  ///   errorOnErrorHandler (Errors Function(List<Errors> errors)?): The `errorOnErrorHandler` parameter
-  /// is a function that takes a list of errors as input and returns an `Errors` object. This function is
-  /// used to handle errors when converting them to a specific type of value.
-  ///   errorsOnErrorHandler (List<Errors> Function(List<Errors> errors)?): The `errorsOnErrorHandler`
-  /// parameter in the `orElse` method is a function that takes a list of errors as input and returns a
-  /// list of errors. This function is used to handle errors when the current value is an error. If
-  /// provided, it will be called with the list of errors and should
-  ///   valueOnErrorHandler (TValue Function(List<Errors> errors)?): The `valueOnErrorHandler` parameter
-  /// in the `orElse` method is a function that takes a list of errors as input and returns a value of
-  /// type `TValue`. If the current `ErrorOr` instance is in an error state, this function can be used to
-  /// handle the errors and return a
-  ///   valueOnError (TValue): The `valueOnError` parameter in the `orElse` method is a value of type
-  /// `TValue` that will be returned as an `ErrorOr` instance if the current instance is an error. If the
-  /// `valueOnError` parameter is not provided or is null, then the `valueOnErrorHandler
-  ///   errorOnError (Errors): The `errorOnError` parameter in the `orElse` method is used to provide a
-  /// default error value if the current value is an error. If the current value is not an error, the
-  /// method will return the current value wrapped in an `ErrorOr` object.
-  ///
-  /// Returns:
-  ///   The `orElse` method is returning an `ErrorOr<TValue>` object.
   ErrorOr<TValue> orElse({
     Errors Function(List<Errors> errors)? errorOnErrorHandler,
     List<Errors> Function(List<Errors> errors)? errorsOnErrorHandler,
@@ -128,32 +71,6 @@ class ErrorOr<TValue> {
         errors.toErrorOr<TValue>();
   }
 
-  /// The function `orElseAsync` returns an `ErrorOr` object based on different error handling scenarios.
-  ///
-  /// Args:
-  ///   errorOnErrorHandler (Future<Errors> Function(List<Errors> errors)?): The `errorOnErrorHandler`
-  /// parameter is a function that takes a list of errors as input and returns a Future containing a
-  /// single `Errors` object. This function is used to handle errors when there is an error in the
-  /// original `Future<ErrorOr<TValue>>` computation.
-  ///   errorsOnErrorHandler (Future<List<Errors>> Function(List<Errors> errors)?): The
-  /// `errorsOnErrorHandler` parameter is a function that takes a list of errors as input and returns a
-  /// future that resolves to a list of errors. This function is used in the `orElseAsync` method to
-  /// handle errors when there are multiple errors present. If the primary error handling mechanisms fail
-  /// to resolve
-  ///   valueOnErrorHandler (Future<TValue> Function(List<Errors> errors)?): The `valueOnErrorHandler`
-  /// parameter is a function that takes a list of errors as input and returns a future that resolves to a
-  /// value of type `TValue`. If an error occurs during the processing of the original future, this
-  /// function can be called to handle the errors and return a new value asynchronously
-  ///   valueOnError (Future<TValue>): The `valueOnError` parameter is a `Future` that represents a value
-  /// to be returned in case there is an error. If there is no error, the value will be converted to an
-  /// `ErrorOr` type and returned.
-  ///   errorOnError (Future<Errors>): The `errorOnError` parameter in the `orElseAsync` function is a
-  /// `Future<Errors>` type that represents a future containing errors to be handled in case of an error
-  /// scenario.
-  ///
-  /// Returns:
-  ///   The `orElseAsync` function returns a `Future` that resolves to an `ErrorOr` object containing a
-  /// value of type `TValue` or a list of errors.
   Future<ErrorOr<TValue>> orElseAsync({
     Future<Errors> Function(List<Errors> errors)? errorOnErrorHandler,
     Future<List<Errors>> Function(List<Errors> errors)? errorsOnErrorHandler,
@@ -172,19 +89,13 @@ class ErrorOr<TValue> {
         errors.toErrorOr<TValue>();
   }
 
-  /// The `failIf` function returns an `ErrorOr` object with an error if a condition is met, otherwise it
-  /// returns the original object.
+  /// A class representing a result that can either be an error or a value.
+  /// Returns a new [ErrorOr] instance with the specified [onValue] and [error].
   ///
-  /// Args:
-  ///   onValue (bool Function(TValue value)): The `onValue` parameter is a function that takes a value of
-  /// type `TValue` as input and returns a boolean value. It is used to determine whether a certain
-  /// condition is met based on the input value.
-  ///   error (Errors): The `error` parameter in the `failIf` function is of type `Errors`. It is used to
-  /// specify the error that should be returned if the condition provided in the `onValue` function is
-  /// met.
-  ///
-  /// Returns:
-  ///   The `failIf` function returns an `ErrorOr<TValue>` object.
+  /// If the current instance is already an error, it returns itself.
+  /// Otherwise, it checks if the [onValue] function returns true for the current value.
+  /// If it does, it returns a new [ErrorOr] instance created from the [error].
+  /// Otherwise, it returns itself.
   ErrorOr<TValue> failIf(
     bool Function(TValue value) onValue,
     Errors error,
@@ -195,17 +106,18 @@ class ErrorOr<TValue> {
     return onValue(value) ? error.toErrorOr<TValue>() : this;
   }
 
-  /// The `failIfAsync` function returns an `ErrorOr` object based on the result of an asynchronous check
-  /// on a value.
+  /// A method that checks if the current [ErrorOr] instance is not an error and
+  /// evaluates a given condition asynchronously. If the condition is true, it
+  /// returns an [ErrorOr] instance created from the provided [Errors] object.
+  /// Otherwise, it returns the current [ErrorOr] instance.
   ///
-  /// Args:
-  ///   onValue (Future<bool> Function(TValue value)): The `onValue` parameter is a function that takes a
-  /// value of type `TValue` and returns a `Future<bool>`.
-  ///   error (Errors): The `error` parameter in the `failIfAsync` function represents an error object
-  /// that can be converted to an `ErrorOr<TValue>` type.
+  /// The [onValue] function takes a value of type [TValue] and returns a
+  /// [Future<bool>] indicating whether the condition is true or false.
   ///
-  /// Returns:
-  ///   A `Future<ErrorOr<TValue>>` is being returned.
+  /// The [error] parameter is an instance of the [Errors] class that represents
+  /// the error to be returned if the condition is true.
+  ///
+  /// Returns a [Future<ErrorOr<TValue>>] representing the result of the operation.
   Future<ErrorOr<TValue>> failIfAsync(
     Future<bool> Function(TValue value) onValue,
     Errors error,
@@ -216,18 +128,26 @@ class ErrorOr<TValue> {
     return await onValue(value) ? error.toErrorOr<TValue>() : this;
   }
 
-  /// The `match` function in Dart takes two functions as arguments and returns the result of one of them
-  /// based on whether an error occurred or not.
+  /// Matches the value of the `ErrorOr` instance and returns a result based on whether it is an error or a value.
   ///
-  /// Args:
-  ///   onValue (TNextValue Function(TValue value)): The `onValue` parameter is a function that takes a
-  /// value of type `TValue` and returns a value of type `TNextValue`.
-  ///   onError (TNextValue Function(List<Errors> errors)): The `onError` parameter is a function that
-  /// takes a list of `Errors` as input and returns a value of type `TNextValue`.
+  /// The [match] method takes two functions as parameters: [onValue] and [onError].
+  /// If the `ErrorOr` instance contains a value, the [onValue] function is called with the value as an argument,
+  /// and the result of the function is returned.
+  /// If the `ErrorOr` instance contains errors, the [onError] function is called with the list of errors as an argument,
+  /// and the result of the function is returned.
   ///
-  /// Returns:
-  ///   The `match` function is returning either the result of the `onError` function if `_isError` is
-  /// true, or the result of the `onValue` function if `_isError` is false.
+  /// The type parameter [TNextValue] represents the type of the result returned by the [onValue] and [onError] functions.
+  /// The type parameter [TValue] represents the type of the value contained in the `ErrorOr` instance.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// ErrorOr<int> result = ErrorOr.value(42);
+  /// int value = result.match(
+  ///   (int val) => val * 2,
+  ///   (List<Errors> errors) => -1,
+  /// );
+  /// print(value); // Output: 84
+  /// ```
   TNextValue match<TNextValue>(
     TNextValue Function(TValue value) onValue,
     TNextValue Function(List<Errors> errors) onError,
@@ -238,20 +158,26 @@ class ErrorOr<TValue> {
     return onValue(value);
   }
 
-  /// The `matchAsync` function in Dart takes two asynchronous functions as parameters and executes one of
-  /// them based on whether an error occurred or not.
+  /// Matches the value or errors of the [ErrorOr] instance and returns a future result.
   ///
-  /// Args:
-  ///   onValue (Future<TNextValue> Function(TValue value)): The `onValue` parameter is a function that
-  /// takes a value of type `TValue` and returns a `Future<TNextValue>`. It is used to handle the case
-  /// when there is no error and process the value accordingly.
-  ///   onError (Future<TNextValue> Function(List<Errors> errors)): The `onError` parameter is a function
-  /// that takes a list of errors as input and returns a future that resolves to a value of type
-  /// `TNextValue`. This function is called when there are errors present in the context of the
-  /// `matchAsync` method.
+  /// The [matchAsync] method takes two parameters: [onValue] and [onError].
+  /// - [onValue] is a function that takes a value of type [TValue] and returns a future result of type [TNextValue].
+  /// - [onError] is a function that takes a list of [Errors] and returns a future result of type [TNextValue].
   ///
-  /// Returns:
-  ///   The `matchAsync` method returns a `Future<TNextValue>`.
+  /// If the [ErrorOr] instance contains an error, the [onError] function will be called with the list of errors.
+  /// If the [ErrorOr] instance contains a value, the [onValue] function will be called with the value.
+  ///
+  /// The [matchAsync] method returns a future result of type [TNextValue].
+  ///
+  /// Example usage:
+  /// ```dart
+  /// ErrorOr<int> result = ErrorOr<int>.value(42);
+  /// int doubledValue = await result.matchAsync(
+  ///   (value) => Future.value(value * 2),
+  ///   (errors) => Future.error(Exception('Error occurred')),
+  /// );
+  /// print(doubledValue); // Output: 84
+  /// ```
   Future<TNextValue> matchAsync<TNextValue>(
     Future<TNextValue> Function(TValue value) onValue,
     Future<TNextValue> Function(List<Errors> errors) onError,
@@ -262,19 +188,24 @@ class ErrorOr<TValue> {
     return await onValue(value);
   }
 
-  /// The `matchFirst` function takes two functions as arguments and returns the result of applying one of
-  /// them based on whether there is an error or not.
+  /// Matches the value of the `ErrorOr` instance and returns the result of the matching function.
   ///
-  /// Args:
-  ///   onValue (TNextValue Function(TValue value)): The `onValue` parameter is a function that takes a
-  /// value of type `TValue` and returns a value of type `TNextValue`.
-  ///   onError (TNextValue Function(Errors error)): The `onError` parameter is a function that takes an
-  /// `Errors` object as input and returns a value of type `TNextValue`.
+  /// The [matchFirst] method takes two functions as parameters: [onValue] and [onError].
+  /// If the `ErrorOr` instance contains a value, the [onValue] function is called with the value as an argument,
+  /// and its result is returned. If the `ErrorOr` instance contains an error, the [onError] function is called
+  /// with the error as an argument, and its result is returned.
   ///
-  /// Returns:
-  ///   The `matchFirst` function is returning either the result of the `onError` function with the
-  /// `firstError` if `_isError` is true, or the result of the `onValue` function with the `value` if
-  /// `_isError` is false.
+  /// The type parameter [TNextValue] represents the type of the value returned by the matching functions.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// ErrorOr<int> result = ErrorOr<int>.value(42);
+  /// int value = result.matchFirst(
+  ///   (int val) => val * 2,
+  ///   (Errors error) => -1,
+  /// );
+  /// print(value); // Output: 84
+  /// ```
   TNextValue matchFirst<TNextValue>(
     TNextValue Function(TValue value) onValue,
     TNextValue Function(Errors error) onError,
@@ -285,19 +216,16 @@ class ErrorOr<TValue> {
     return onValue(value);
   }
 
-  /// The `matchFirstAsync` function asynchronously executes a callback based on whether an error occurred
-  /// or a value is present.
+  /// Matches the value or error of the `ErrorOr` instance and returns a future result.
   ///
-  /// Args:
-  ///   onValue (Future<TNextValue> Function(TValue value)): The `onValue` parameter is a function that
-  /// takes a value of type `TValue` and returns a `Future<TNextValue>`. It is called when there is no
-  /// error and processes the value.
-  ///   onError (Future<TNextValue> Function(Errors error)): The `onError` parameter is a function that
-  /// takes an `Errors` object as input and returns a `Future<TNextValue>`. This function is called when
-  /// there is an error condition in the `matchFirstAsync` method.
+  /// The [matchFirstAsync] method takes two parameters: [onValue] and [onError].
+  /// - The [onValue] parameter is a function that takes a value of type [TValue] and returns a future result of type [TNextValue].
+  /// - The [onError] parameter is a function that takes an [Errors] object representing the error and returns a future result of type [TNextValue].
   ///
-  /// Returns:
-  ///   The `matchFirstAsync` function returns a `Future<TNextValue>`.
+  /// If the `ErrorOr` instance contains an error, the [onError] function will be called with the first error encountered.
+  /// If the `ErrorOr` instance contains a value, the [onValue] function will be called with the value.
+  ///
+  /// The method returns a future result of type [TNextValue].
   Future<TNextValue> matchFirstAsync<TNextValue>(
     Future<TNextValue> Function(TValue value) onValue,
     Future<TNextValue> Function(Errors error) onError,
@@ -308,15 +236,13 @@ class ErrorOr<TValue> {
     return await onValue(value);
   }
 
-  /// The `doSwitch` function in Dart takes two functions as parameters and executes one of them based on
-  /// whether an error occurred or not.
+  /// Performs a switch operation based on the state of the `ErrorOr` object.
   ///
-  /// Args:
-  ///   onValue (Function(TValue value)): The `onValue` parameter is a function that takes a single
-  /// argument of type `TValue` and returns a result.
-  ///   onError (Function(List<Errors> errors)): The `onError` parameter is a function that takes a list
-  /// of `Errors` as input and handles the error case when `_isError` is true.
-  doSwitch(
+  /// If the object represents an error, the [onError] function is called with the list of errors.
+  /// If the object represents a value, the [onValue] function is called with the value.
+  ///
+  /// The [onValue] and [onError] functions are required and must be provided.
+  void doSwitch(
     Function(TValue value) onValue,
     Function(List<Errors> errors) onError,
   ) {
@@ -327,16 +253,12 @@ class ErrorOr<TValue> {
     }
   }
 
-  /// The `doSwitchAsync` function asynchronously executes a callback based on whether an error occurred
-  /// or not.
+  /// Performs a switch operation asynchronously based on the state of the [ErrorOr] object.
   ///
-  /// Args:
-  ///   onValue (Future Function(TValue value)): The `onValue` parameter is a function that takes a single
-  /// argument of type `TValue` and returns a `Future`. This function is called when the `doSwitchAsync`
-  /// method is invoked and the internal state indicates that there is no error.
-  ///   onError (Future Function(List<Errors> errors)): The `onError` parameter is a function that takes a
-  /// list of errors as input and returns a Future. It is used in the `doSwitchAsync` function to handle
-  /// the case when there are errors.
+  /// If the [ErrorOr] object represents an error, the [onError] function will be called with the list of errors.
+  /// If the [ErrorOr] object represents a value, the [onValue] function will be called with the value.
+  ///
+  /// Returns a [Future] that completes when the switch operation is done.
   Future doSwitchAsync(
     Future Function(TValue value) onValue,
     Future Function(List<Errors> errors) onError,
@@ -348,14 +270,19 @@ class ErrorOr<TValue> {
     }
   }
 
-  /// The `doSwitchFirst` function in Dart executes a callback based on whether an error has occurred or
-  /// not.
+  /// Performs a switch operation on the `ErrorOr` object.
   ///
-  /// Args:
-  ///   onValue (Function(TValue value)): The `onValue` parameter is a function that takes a single
-  /// argument of type `TValue` and returns void.
-  ///   onFirstError (Function(Errors error)): The `onFirstError` parameter is a function that takes an
-  /// `Errors` object as an argument and handles the error case when `_isError` is true.
+  /// If the object contains a value, the [onValue] function is called with the value.
+  /// If the object contains an error, the [onFirstError] function is called with the error.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// ErrorOr<int> result = ErrorOr<int>.value(42);
+  /// result.doSwitchFirst(
+  ///   (value) => print('Value: $value'),
+  ///   (error) => print('Error: $error'),
+  /// );
+  /// ```
   doSwitchFirst(
     Function(TValue value) onValue,
     Function(Errors error) onFirstError,
@@ -367,17 +294,13 @@ class ErrorOr<TValue> {
     }
   }
 
-  /// The `doSwitchFirstAsync` function asynchronously executes different functions based on whether an
-  /// error has occurred or not.
+  /// Performs a switch operation based on the state of the [ErrorOr] object.
   ///
-  /// Args:
-  ///   onValue (Future Function(TValue value)): The `onValue` parameter is a function that takes a value
-  /// of type `TValue` and returns a `Future`. This function is called when there is no error and the
-  /// value is available to be processed.
-  ///   onFirstError (Future Function(Errors error)): The `onFirstError` parameter is a function that
-  /// takes an `Errors` object as input and returns a `Future`. This function is called when there is an
-  /// error condition in the `doSwitchFirstAsync` method, and it is responsible for handling the first
-  /// error encountered.
+  /// If the object represents an error, the [onFirstError] function is called
+  /// with the first error encountered. If the object represents a value, the
+  /// [onValue] function is called with the value.
+  ///
+  /// Returns a [Future] that completes when the switch operation is finished.
   Future doSwitchFirstAsync(
     Future Function(TValue value) onValue,
     Future Function(Errors error) onFirstError,
@@ -389,16 +312,15 @@ class ErrorOr<TValue> {
     }
   }
 
-  /// The `then` function takes a callback that operates on the current value if there is no error,
-  /// otherwise it returns the current errors.
+  /// Represents a computation that may either produce a value of type [TValue] or an error.
+  /// Chains a computation to be executed if this [ErrorOr] contains a value.
   ///
-  /// Args:
-  ///   onValue (ErrorOr<TNextValue> Function(TValue value)): The `onValue` parameter is a function that
-  /// takes a value of type `TValue` and returns an `ErrorOr<TNextValue>`.
+  /// The [onValue] function takes the current value of type [TValue] and returns
+  /// an [ErrorOr] of type [TNextValue]. If this [ErrorOr] contains an error,
+  /// the errors are converted to an [ErrorOr] of type [TNextValue].
   ///
-  /// Returns:
-  ///   An `ErrorOr<TNextValue>` object is being returned.
-  ErrorOr<TNextValue> then<TNextValue>(
+  /// Returns the result of the computation as an [ErrorOr] of type [TNextValue].
+  ErrorOr<TNextValue> also<TNextValue>(
     ErrorOr<TNextValue> Function(TValue value) onValue,
   ) {
     if (_isError) {
@@ -408,15 +330,10 @@ class ErrorOr<TValue> {
     return onValue(value);
   }
 
-  /// The `thenDo` function in Dart takes a callback function to be executed if there is no error.
-  ///
-  /// Args:
-  ///   onValue (Function(TValue value)): The `onValue` parameter is a function that takes a single
-  /// argument of type `TValue` and returns void.
-  ///
-  /// Returns:
-  ///   The `ErrorOr<TValue>` object is being returned.
-  ErrorOr<TValue> thenDo(
+  /// Executes the provided function [onValue] if the [ErrorOr] instance is not an error.
+  /// The [onValue] function takes a single argument of type [TValue] and returns no value.
+  /// Returns the current [ErrorOr] instance.
+  ErrorOr<TValue> alsoDo(
     Function(TValue value) onValue,
   ) {
     if (!_isError) {
@@ -426,17 +343,15 @@ class ErrorOr<TValue> {
     return this;
   }
 
-  /// The `thenAsync` function takes a function that operates on a value and returns a Future containing
-  /// the result or an error.
+  /// A helper method that allows chaining asynchronous operations on a [ErrorOr] instance.
   ///
-  /// Args:
-  ///   onValue (Future<ErrorOr<TNextValue>> Function(TValue value)): The `onValue` parameter is a
-  /// function that takes a value of type `TValue` and returns a `Future` of `ErrorOr<TNextValue>`.
+  /// It takes a callback function [onValue] that will be called if the current [ErrorOr] instance
+  /// contains a value. The callback function receives the value as a parameter and should return
+  /// a [Future<ErrorOr<TNextValue>>]. If the current [ErrorOr] instance contains an error, it
+  /// converts the error to an [ErrorOr<TNextValue>] and returns it.
   ///
-  /// Returns:
-  ///   The `thenAsync` method returns a `Future` containing an `ErrorOr` object that may hold a value of
-  /// type `TNextValue`.
-  Future<ErrorOr<TNextValue>> thenAsync<TNextValue>(
+  /// Returns a [Future<ErrorOr<TNextValue>>] representing the result of the asynchronous operation.
+  Future<ErrorOr<TNextValue>> alsoAsync<TNextValue>(
     Future<ErrorOr<TNextValue>> Function(TValue value) onValue,
   ) async {
     if (_isError) {
@@ -446,17 +361,15 @@ class ErrorOr<TValue> {
     return await onValue(value);
   }
 
-  /// The `thenDoAsync` function takes a callback that operates on a value asynchronously and returns a
-  /// `Future` of `ErrorOr` type.
+  /// A helper method that allows chaining asynchronous operations on a [ErrorOr] object.
   ///
-  /// Args:
-  ///   onValue (Future Function(TValue value)): The `onValue` parameter is a function that takes a value
-  /// of type `TValue` and returns a `Future`. In the `thenDoAsync` method, this function is called
-  /// asynchronously if the current `Future` instance does not represent an error.
+  /// The [alsoDoAsync] method takes a callback function [onValue] that will be executed if the [ErrorOr] object is not an error.
+  /// The [onValue] function should take a single parameter of type [TValue] and return a [Future].
   ///
-  /// Returns:
-  ///   The `thenDoAsync` method is returning a `Future<ErrorOr<TValue>>`.
-  Future<ErrorOr<TValue>> thenDoAsync(
+  /// If the [ErrorOr] object is not an error, the [onValue] function will be called with the value of the [ErrorOr] object.
+  ///
+  /// Returns a [Future] that completes with the original [ErrorOr] object.
+  Future<ErrorOr<TValue>> alsoDoAsync(
     Future Function(TValue value) onValue,
   ) async {
     if (!_isError) {
@@ -465,4 +378,7 @@ class ErrorOr<TValue> {
 
     return this;
   }
+
+  /// Returns the value if the [ErrorOr] is not an error, otherwise returns null.
+  TValue? get valueOrNull => isError ? null : value;
 }
