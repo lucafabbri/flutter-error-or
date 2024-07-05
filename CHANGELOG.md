@@ -1,3 +1,7 @@
+## 1.1.0
+
+- **FIX**: removes environment from github pipeline
+
 ## 1.0.2
 
 - **FIX**: orElse fix value on error handler with nullable
