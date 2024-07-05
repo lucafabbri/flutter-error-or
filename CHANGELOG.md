@@ -1,3 +1,8 @@
+## 1.0.2
+
+- **FIX**: orElse fix value on error handler with nullable
+- **FIX**: orElse handlers return ErrorOr
+
 ## 1.0.1
 
 - **FIX**: pubspec version

@@ -56,7 +56,7 @@ class ErrorOr<TValue> {
   ErrorOr<TValue> orElse({
     Errors Function(List<Errors> errors)? errorOnErrorHandler,
     List<Errors> Function(List<Errors> errors)? errorsOnErrorHandler,
-    TValue Function(List<Errors> errors)? valueOnErrorHandler,
+    TValue? Function(List<Errors> errors)? valueOnErrorHandler,
     TValue? valueOnError,
     Errors? errorOnError,
   }) {
@@ -64,7 +64,7 @@ class ErrorOr<TValue> {
       return value.toErrorOr();
     }
     return valueOnError?.toErrorOr() ??
-        valueOnErrorHandler?.call(errors).toErrorOr() ??
+        valueOnErrorHandler?.call(errors)?.toErrorOr() ??
         errorOnError?.toErrorOr<TValue>() ??
         errorOnErrorHandler?.call(errors).toErrorOr<TValue>() ??
         errorsOnErrorHandler?.call(errors).toErrorOr<TValue>() ??
@@ -74,8 +74,8 @@ class ErrorOr<TValue> {
   Future<ErrorOr<TValue>> orElseAsync({
     Future<Errors> Function(List<Errors> errors)? errorOnErrorHandler,
     Future<List<Errors>> Function(List<Errors> errors)? errorsOnErrorHandler,
-    Future<TValue> Function(List<Errors> errors)? valueOnErrorHandler,
-    Future<TValue>? valueOnError,
+    Future<TValue?> Function(List<Errors> errors)? valueOnErrorHandler,
+    Future<TValue?>? valueOnError,
     Future<Errors>? errorOnError,
   }) async {
     if (!_isError) {
